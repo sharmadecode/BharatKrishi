@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">BharatKrishi</string>
+    <string name="home">Home</string>
+    <string name="crop_advisory">Crop Advisory</string>
+    <string name="weather">Weather</string>
+    <string name="help">Help</string>
+    <string name="profile">Profile</string>
+    <string name="notifications">Notifications</string>
+    <string name="market_prices">Market Prices</string>
+    <string name="soil_analysis">Soil Analysis</string>
+    <string name="ai_chat">AI Assistant</string>
+    <string name="fertilizer_advisory">Fertilizer Advisory</string>
+    <string name="pest_control">Pest Control</string>
+    <string name="youtube_tutorials">Video Tutorials</string>
+    <string name="welcome_farmer">Good Morning, Farmer</string>
+    <string name="scan_crop">Scan Your Crop</string>
+    <string name="talk_to_ai">Talk to AI</string>
+    <string name="weather_alert">Weather Alert</string>
+    <string name="market_today">Today Market</string>
+</resources>

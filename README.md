@@ -32,7 +32,7 @@
 
 1. **Clone & Open**
 ```bash
-git clone https://github.com/yourusername/bharatkrishi-android.git
+git clone https://github.com/sharmadecode/BharatKrishi.git
 ```
 2. **Sync dependencies** in Android Studio
 3. **Run the app** on device/emulator
@@ -71,8 +71,8 @@ app/
 **Phase 3** 📋 Weather/Mandi APIs, voice AI, government scheme integration  
 **Phase 4** 🔮 Advanced analytics, IoT sensors, blockchain supply chain tracking
 
-## 👥 Team - Cartel Coders
-Aditya Sharma
+## Team name - Cartel Coders
+Aditya Sharma(leader)
 
 ---
 **Made for SIH 2025 | Empowering Punjab's Farmers with AI Technology**

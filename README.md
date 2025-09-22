@@ -39,14 +39,24 @@ git clone https://github.com/yourusername/bharatkrishi-android.git
 
 ## 📁 Project Structure
 ```
-app/src/main/java/com/bharatkrishi/app/
-├── MainActivity.kt              # Navigation setup
-├── screens/                     # All UI screens
-│   ├── HomeScreen.kt           # Dashboard
-│   ├── SoilInfoScreen.kt       # Crop scanner
-│   ├── AIChatScreen.kt         # Voice/text chatbot
-│   └── [other screens...]
-└── ui/theme/                   # App theming
+app/
+├── src/main/java/com/bharatkrishi/app/
+│   ├── MainActivity.kt              # Main entry point
+│   ├── screens/                     # All UI screens
+│   │   ├── HomeScreen.kt           # Dashboard screen
+│   │   ├── MarketPricesScreen.kt   # Market price tracking
+│   │   ├── WeatherForecastScreen.kt # Weather information
+│   │   ├── SoilInfoScreen.kt       # Crop scanning & soil analysis
+│   │   ├── AIChatScreen.kt         # AI assistant interface
+│   │   ├── ProfileScreen.kt        # Farmer profile
+│   │   └── [other screens...]
+│   └── ui/theme/                   # App theming
+│       ├── Theme.kt               # Color schemes
+│       └── Type.kt                # Typography
+├── src/main/res/
+│   ├── values/strings.xml         # String resources
+│   └── [other resources]
+└── build.gradle.kts              # Dependencies
 ```
 
 ## 🎨 UI/UX Principles
@@ -62,7 +72,7 @@ app/src/main/java/com/bharatkrishi/app/
 **Phase 4** 🔮 Advanced analytics, IoT sensors, blockchain supply chain tracking
 
 ## 👥 Team - Cartel Coders
-Aditya Sharma • Adarsh Mishra • Parmanshu Singh Patel • Saksham Tyagi • Piyush Tiwari • Dimple
+Aditya Sharma
 
 ---
 **Made for SIH 2025 | Empowering Punjab's Farmers with AI Technology**

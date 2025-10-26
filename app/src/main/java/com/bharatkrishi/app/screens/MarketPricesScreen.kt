@@ -1,152 +1,180 @@
 package com.bharatkrishi.app.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.bharatkrishi.app.DataState
+import com.bharatkrishi.app.MarketData
+import com.bharatkrishi.app.MarketViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarketPricesScreen(navController: NavController) {
-    var selectedCategory by remember { mutableStateOf("All") }
+fun MarketPricesScreen(navController: NavController, marketViewModel: MarketViewModel) {
+    // Observe the live data from the ViewModel
+    val state by marketViewModel.marketDataState.observeAsState()
 
-    val categories = listOf("All", "Grains", "Vegetables", "Fruits", "Cash Crops")
+    // Observe the selected filter values from the ViewModel to update the UI
+    val selectedState by marketViewModel.selectedState.observeAsState()
+    val selectedCommodity by marketViewModel.selectedCommodity.observeAsState()
 
-    val marketData = listOf(
-        MarketCrop("Wheat", "₹2,150", "₹2,100", "+2.4%", Color(0xFF4CAF50), "Grains"),
-        MarketCrop("Rice (Basmati)", "₹4,200", "₹4,150", "+1.2%", Color(0xFF4CAF50), "Grains"),
-        MarketCrop("Cotton", "₹5,670", "₹5,800", "-2.2%", Color(0xFFf44336), "Cash Crops"),
-        MarketCrop("Sugarcane", "₹350", "₹340", "+2.9%", Color(0xFF4CAF50), "Cash Crops"),
-        MarketCrop("Tomato", "₹25", "₹30", "-16.7%", Color(0xFFf44336), "Vegetables"),
-        MarketCrop("Onion", "₹18", "₹22", "-18.2%", Color(0xFFf44336), "Vegetables"),
-        MarketCrop("Potato", "₹12", "₹15", "-20.0%", Color(0xFFf44336), "Vegetables"),
-        MarketCrop("Apple", "₹80", "₹75", "+6.7%", Color(0xFF4CAF50), "Fruits"),
-        MarketCrop("Banana", "₹35", "₹38", "-7.9%", Color(0xFFf44336), "Fruits"),
-        MarketCrop("Mango", "₹45", "₹40", "+12.5%", Color(0xFF4CAF50), "Fruits")
-    )
+    // Sample lists for our dropdown menus.
+    val states = listOf("All States", "Maharashtra", "Punjab", "Uttar Pradesh", "Andhra Pradesh", "Gujarat")
+    val commodities = listOf("All Commodities", "Onion", "Potato", "Tomato", "Wheat", "Cotton", "Lemon")
 
-    val filteredData = if (selectedCategory == "All") {
-        marketData
-    } else {
-        marketData.filter { it.category == selectedCategory }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFF5F5F5))
-    ) {
-        // Top App Bar
-        TopAppBar(
-            title = { Text("Market Prices", fontWeight = FontWeight.Bold) },
-            navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Market Price List", fontWeight = FontWeight.Bold) },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
                 }
-            },
-            actions = {
-                IconButton(onClick = { /* Refresh action */ }) {
-                    Icon(Icons.Default.Refresh, contentDescription = "Refresh")
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White
             )
-        )
+        }
+    ) { innerPadding ->
+        Column(modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()) {
 
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            // Market Info Card
-            Card(
+            // --- UI FOR FILTER DROPDOWNS ---
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E8))
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        Icons.Default.TrendingUp,
-                        contentDescription = "Market Trend",
-                        tint = Color(0xFF2E7D32),
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column {
-                        Text(
-                            "Last Updated: Today, 2:30 PM",
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 14.sp
-                        )
-                        Text(
-                            "Prices may vary by location and quality",
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
-                    }
-                }
+                // State Dropdown
+                FilterDropdown(
+                    label = "State",
+                    options = states,
+                    selectedOption = selectedState ?: "All States",
+                    onOptionSelected = { selected ->
+                        // If "All States" is chosen, we pass null to the ViewModel to remove the filter.
+                        // Otherwise, we pass the selected state name.
+                        val valueToSet = if (selected == "All States") null else selected
+                        marketViewModel.onStateSelected(valueToSet)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+
+                // Commodity Dropdown
+                FilterDropdown(
+                    label = "Commodity",
+                    options = commodities,
+                    selectedOption = selectedCommodity ?: "All Commodities",
+                    onOptionSelected = { selected ->
+                        val valueToSet = if (selected == "All Commodities") null else selected
+                        marketViewModel.onCommoditySelected(valueToSet)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
             }
 
-            // Category Filter
-            ScrollableTabRow(
-                selectedTabIndex = categories.indexOf(selectedCategory),
-                modifier = Modifier.padding(bottom = 16.dp),
-                containerColor = Color.Transparent,
-                edgePadding = 0.dp
+            // Box for displaying Loading/Success/Error states
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                categories.forEach { category ->
-                    Tab(
-                        selected = selectedCategory == category,
-                        onClick = { selectedCategory = category },
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(
-                                if (selectedCategory == category)
-                                    Color(0xFF2E7D32)
-                                else
-                                    Color.White
-                            )
-                    ) {
-                        Text(
-                            category,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                            color = if (selectedCategory == category) Color.White else Color.Black,
-                            fontWeight = FontWeight.Medium
-                        )
+                when (val currentState = state) {
+                    is DataState.Loading -> {
+                        CircularProgressIndicator()
                     }
-                }
-            }
-
-            // Market Prices List
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(filteredData) { crop ->
-                    MarketCropCard(crop)
+                    is DataState.Success -> {
+                        if (currentState.data.isEmpty()) {
+                            Text("No results found for this filter.")
+                        } else {
+                            MarketDataList(marketList = currentState.data)
+                        }
+                    }
+                    is DataState.Error -> {
+                        Text("Error: ${currentState.message}", color = Color.Red)
+                    }
+                    null -> {
+                        // Initial empty state, you can put a prompt here
+                        Text("Select filters to see prices.")
+                    }
                 }
             }
         }
     }
 }
 
+// --- NEW, REUSABLE DROPDOWN COMPONENT ---
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarketCropCard(crop: MarketCrop) {
+fun FilterDropdown(
+    label: String,
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = selectedOption,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(label) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(option) },
+                    onClick = {
+                        onOptionSelected(option)
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+// Composable to display the full list of market data
+@Composable
+fun MarketDataList(marketList: List<MarketData>) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp) // Add some space between items
+    ) {
+        items(marketList) { marketData ->
+            ApiMarketCropCard(data = marketData)
+        }
+    }
+}
+
+// Composable for a single item in the detailed list
+@Composable
+fun ApiMarketCropCard(data: MarketData) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -157,80 +185,39 @@ fun MarketCropCard(crop: MarketCrop) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Left side: Commodity and Market details
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    crop.name,
+                    data.commodity ?: "Unknown Commodity",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
                 Text(
-                    "per quintal",
+                    "Market: ${data.market}, ${data.district}",
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
             }
-
+            // Right side: Price details
             Column(
-                horizontalAlignment = Alignment.End
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    crop.currentPrice,
+                    "₹${data.modal_price}",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    color = Color(0xFF2E7D32) // Use app theme color
                 )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        "Yesterday: ${crop.previousPrice}",
-                        fontSize = 12.sp,
-                        color = Color.Gray
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            // Price change indicator
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = crop.changeColor.copy(alpha = 0.1f)
-                ),
-                modifier = Modifier.clip(RoundedCornerShape(8.dp))
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        if (crop.changePercentage.startsWith("+"))
-                            Icons.Default.TrendingUp
-                        else
-                            Icons.Default.TrendingDown,
-                        contentDescription = "Trend",
-                        tint = crop.changeColor,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        crop.changePercentage,
-                        color = crop.changeColor,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    "Min: ₹${data.min_price} | Max: ₹${data.max_price}",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
             }
         }
     }
 }
-
-data class MarketCrop(
-    val name: String,
-    val currentPrice: String,
-    val previousPrice: String,
-    val changePercentage: String,
-    val changeColor: Color,
-    val category: String
-)

@@ -1,9 +1,11 @@
 package com.bharatkrishi.app
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,7 +22,10 @@ class MainActivity : ComponentActivity() {
 
     // 1. Get a reference to the ViewModel using the standard delegate for Compose activities
     private val marketViewModel: MarketViewModel by viewModels()
+    private val weatherViewModel: WeatherViewModel by viewModels()
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,15 +39,16 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     // You can pass the ViewModel down to your composable if needed
-                    BharatKrishiApp(marketViewModel)
+                    BharatKrishiApp(marketViewModel, weatherViewModel)
                 }
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BharatKrishiApp(marketViewModel: MarketViewModel) { // Pass the ViewModel here
+fun BharatKrishiApp(marketViewModel: MarketViewModel,weatherViewModel: WeatherViewModel) { // Pass the ViewModel here
     val navController = rememberNavController()
 
     // You can now observe the ViewModel's state here or pass it further down
@@ -52,13 +58,13 @@ fun BharatKrishiApp(marketViewModel: MarketViewModel) { // Pass the ViewModel he
         navController = navController,
         startDestination = "home"
     ) {
-        composable("home") { HomeScreen(navController, marketViewModel) }
+        composable("home") { HomeScreen(navController, marketViewModel, weatherViewModel) }
         composable("notifications") { NotificationsScreen(navController) }
         // Example: Pass the ViewModel to the screen that will display the data
         composable("market_prices") { MarketPricesScreen(navController, marketViewModel) }
         composable("soil_info") { SoilInfoScreen(navController) }
         composable("ai_chat") { AIChatScreen(navController) }
-        composable("weather_forecast") { WeatherForecastScreen(navController) }
+        composable("weather_page") { WeatherForecastScreen(navController, weatherViewModel) }
         composable("fertilizer_advisory") { FertilizerAdvisoryScreen(navController) }
         composable("crop_advisory") { CropAdvisoryScreen(navController) }
         composable("pest_control") { PestControlScreen(navController) }

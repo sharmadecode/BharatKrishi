@@ -23,26 +23,16 @@ import androidx.navigation.NavController
 import com.bharatkrishi.app.MarketViewModel
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.semantics.text
 import androidx.compose.ui.unit.dp
-import com.bharatkrishi.app.WeatherViewModel
-import com.bharatkrishi.app.network.NetworkResponse
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, marketViewModel: MarketViewModel, weatherViewModel: WeatherViewModel) {
+fun HomeScreen(navController: NavController, marketViewModel: MarketViewModel) {
     var selectedLanguage by remember { mutableStateOf("English") }
     var expanded by remember { mutableStateOf(false) }
     var username by remember { mutableStateOf("Rajesh Kumar") }
-    val weatherResult by weatherViewModel.weatherResult.observeAsState()
-
-    LaunchedEffect(Unit) {
-        weatherViewModel.getData("New Delhi")
-    }
-
 
     val languages = listOf("English", "Hindi", "Punjabi", "Tamil", "Telugu", "Bengali")
 
@@ -160,36 +150,11 @@ fun HomeScreen(navController: NavController, marketViewModel: MarketViewModel, w
             }
 
             // Weather Alert
-            when (val result = weatherResult) {
-                is NetworkResponse.Success -> {
-                    WeatherAlertCard(
-                        temperature = "${result.data.current.temp_c.toInt()}°C",
-                        description = result.data.current.condition.text,
-                        onClick = { navController.navigate("weather_page") }
-                    )
-                }
-                is NetworkResponse.Loading -> {
-                    WeatherAlertCard(
-                        temperature = "--°C",
-                        description = "Loading weather...",
-                        onClick = { /* Do nothing while loading */ }
-                    )
-                }
-                is NetworkResponse.Error -> {
-                    WeatherAlertCard(
-                        temperature = "!",
-                        description = "Could not load weather",
-                        onClick = { weatherViewModel.getData("Delhi") } // Allow retry
-                    )
-                }
-                null -> {
-                    WeatherAlertCard(
-                        temperature = "--°C",
-                        description = "Fetching weather...",
-                        onClick = { /* Do nothing */ }
-                    )
-                }
-            }
+            WeatherAlertCard(
+                temperature = "28°C",
+                description = "Light rain expected",
+                onClick = { navController.navigate("weather_forecast") }
+            )
 
             // Quick Actions in 2x2 Grid
             Text(
@@ -334,6 +299,7 @@ fun BottomNavigationBar(navController: NavController) {
         val items = listOf(
             BottomNavItem("Home", Icons.Default.Home, "home"),
             BottomNavItem("Advisory", Icons.Default.Agriculture, "crop_advisory"),
+            BottomNavItem("Weather", Icons.Default.Cloud, "weather_forecast"),
             BottomNavItem("Help", Icons.Default.Help, "help_support"),
             BottomNavItem("Profile", Icons.Default.Person, "profile")
         )

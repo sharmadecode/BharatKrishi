@@ -78,24 +78,16 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 
-    // OkHttp for logging network calls
+    // OkHttp for logging network calls (very useful for debugging)
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     // Room Database for local caching
     implementation("androidx.room:room-runtime:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1") // Annotation processor
 
-    // Kotlin Coroutines for background tasks
+    // Kotlin Coroutines for background tasks (essential for Room)
     implementation("androidx.room:room-ktx:2.6.1")
 
-
-    implementation("com.google.android.gms:play-services-location:21.2.0")
-
-    // live data runtime android library
     implementation("androidx.compose.runtime:runtime-livedata")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
-
-    //coil
-    implementation("io.coil-kt:coil-compose:2.6.0")
 
 }

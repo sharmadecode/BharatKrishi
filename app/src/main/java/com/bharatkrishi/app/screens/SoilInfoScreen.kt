@@ -115,7 +115,7 @@ fun CropScannerContent() {
         }
     }
 
-    // CAMERA launcher (uses preview bitmap)
+    // CAMERA launcher
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
@@ -128,7 +128,7 @@ fun CropScannerContent() {
         }
     }
 
-    // Load ONNX model (runs once)
+
     LaunchedEffect(Unit) {
         coroutineScope.launch(Dispatchers.IO) {
             try {
@@ -328,11 +328,17 @@ fun CropScannerContent() {
     }
 }
 
-// Copy ONNX model from assets to internal storage
+
 fun loadOnnxModel(context: Context, modelName: String): File {
     val onnxFile = File(context.filesDir, modelName)
+    val dataFile = File(context.filesDir, "$modelName.data")
 
+    Log.d("ONNX", "Checking ONNX: ${onnxFile.absolutePath} exists=${onnxFile.exists()}")
+    Log.d("ONNX", "Checking DATA: ${dataFile.absolutePath} exists=${dataFile.exists()}")
+
+    // Copy ONNX
     if (!onnxFile.exists()) {
+        Log.d("ONNX", "Copying .onnx file from assets")
         context.assets.open(modelName).use { input ->
             FileOutputStream(onnxFile).use { output ->
                 input.copyTo(output)
@@ -340,13 +346,27 @@ fun loadOnnxModel(context: Context, modelName: String): File {
         }
     }
 
-    // If you ALSO have a .onnx.data, you can copy it similarly here.
-    // If not, ONNXRuntime may still try to look for it but will log only.
+    // Copy .data file
+    if (!dataFile.exists()) {
+        Log.d("ONNX", "Copying .onnx.data file from assets")
+        try {
+            context.assets.open("$modelName.data").use { input ->
+                FileOutputStream(dataFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("ONNX", "ERROR COPYING .data FILE → FILE NOT FOUND IN ASSETS")
+        }
+    }
+
+    Log.d("ONNX", "Final check: onnx.exists=${onnxFile.exists()}, data.exists=${dataFile.exists()}")
 
     return onnxFile
 }
 
-// Run model on captured bitmap
+
+
 fun runModelOnBitmap(
     bitmap: Bitmap,
     session: OrtSession,

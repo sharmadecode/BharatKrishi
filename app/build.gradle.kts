@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-
 android {
     namespace = "com.bharatkrishi.app"
     compileSdk = 34
@@ -23,6 +22,14 @@ android {
         }
     }
 
+    // ⬇️⬇️ IMPORTANT FIX .onnx + .onnx.data are packaged ⬇️⬇️
+    sourceSets {
+        getByName("main") {
+            assets.srcDirs("src/main/assets")
+        }
+    }
+    // ⬆️⬆️ DON'T REMOVE THIS ⬆️⬆️
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -32,7 +39,6 @@ android {
             )
         }
     }
-
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -66,6 +72,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("com.google.android.material:material:1.11.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -74,29 +81,28 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    //Retrofit
+    // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-
-    // OkHttp for logging network calls
+    // OkHttp Logging
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
-    // Room Database for local caching
+    // Room DB
     implementation("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
-
-    // Kotlin Coroutines for background tasks
     implementation("androidx.room:room-ktx:2.6.1")
 
-
+    // Location
     implementation("com.google.android.gms:play-services-location:21.2.0")
 
-    // live data runtime android library
+    // LiveData Compose
     implementation("androidx.compose.runtime:runtime-livedata")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
-    //coil
-    implementation("io.coil-kt:coil-compose:2.6.0")
-    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.18.0")
 
+    // Image Loading
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // ONNX Runtime
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.18.0")
 }

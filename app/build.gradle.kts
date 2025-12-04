@@ -33,6 +33,7 @@ android {
         }
     }
 
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -94,8 +95,8 @@ dependencies {
     // live data runtime android library
     implementation("androidx.compose.runtime:runtime-livedata")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
-
     //coil
     implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.18.0")
 
 }

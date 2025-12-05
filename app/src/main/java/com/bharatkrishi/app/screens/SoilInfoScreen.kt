@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.util.Log
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -36,6 +37,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.FloatBuffer
+import android.graphics.ImageDecoder
 
 // 8-class wheat disease labels
 private val CLASS_LABELS = arrayOf(
@@ -127,6 +129,34 @@ fun CropScannerContent() {
             analysisResult = "Model is not loaded yet."
         }
     }
+    // GALLERY launcher
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            try {
+                val rawBitmap = if (android.os.Build.VERSION.SDK_INT >= 28) {
+                    val source = ImageDecoder.createSource(context.contentResolver, uri)
+                    ImageDecoder.decodeBitmap(source)
+                } else {
+                    @Suppress("DEPRECATION")
+                    MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                }
+
+                // FIX: convert HARDWARE bitmap to ARGB_8888
+                val bitmap = ensureBitmapMutable(rawBitmap)
+
+                if (ortSession != null && ortEnvironment != null) {
+                    analysisResult = runModelOnBitmap(bitmap, ortSession!!, ortEnvironment!!)
+                } else {
+                    analysisResult = "Model not loaded."
+                }
+
+            } catch (e: Exception) {
+                analysisResult = "Error loading image: ${e.message}"
+            }
+        }
+    }
 
 
     LaunchedEffect(Unit) {
@@ -213,15 +243,14 @@ fun CropScannerContent() {
                     Spacer(modifier = Modifier.height(8.dp))
 
                     OutlinedButton(
-                        onClick = {
-                            // TODO: implement gallery picker later if needed
-                        },
+                        onClick = { galleryLauncher.launch("image/*") },
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(Icons.Default.PhotoLibrary, contentDescription = "Gallery")
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Select from Gallery (coming soon)")
+                        Text("Select from Gallery")
                     }
+
 
                     // Model loading status
                     Spacer(modifier = Modifier.height(8.dp))
@@ -364,8 +393,16 @@ fun loadOnnxModel(context: Context, modelName: String): File {
 
     return onnxFile
 }
-
-
+fun ensureBitmapMutable(src: Bitmap): Bitmap {
+    return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O &&
+        src.config == Bitmap.Config.HARDWARE
+    ) {
+        // Convert HARDWARE → ARGB_8888
+        src.copy(Bitmap.Config.ARGB_8888, true)
+    } else {
+        src
+    }
+}
 
 fun runModelOnBitmap(
     bitmap: Bitmap,
@@ -374,7 +411,8 @@ fun runModelOnBitmap(
 ): String {
     return try {
         // 1. Resize to 256×256
-        val resized = Bitmap.createScaledBitmap(bitmap, 256, 256, true)
+        val safeBitmap = ensureBitmapMutable(bitmap)
+        val resized = Bitmap.createScaledBitmap(safeBitmap, 256, 256, true)
 
         // 2. Convert bitmap → FloatArray (CHW format)
         val input = FloatArray(1 * 3 * 256 * 256)

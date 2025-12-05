@@ -71,5 +71,10 @@ fun BharatKrishiApp(marketViewModel: MarketViewModel,weatherViewModel: WeatherVi
         composable("help_support") { HelpSupportScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("youtube_tutorials") { YoutubeTutorialsScreen(navController) }
+        composable("drone_analysis") {
+            DroneAnalysisScreen(navController)
+        }
+        composable("community_forum") { CommunityForumScreen(navController) }
+
     }
 }

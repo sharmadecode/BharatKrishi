@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">BharatKrishi</string>
+    <string name="home">Home</string>
+    <string name="crop_advisory">Crop Advisory</string>
+    <string name="weather">Weather</string>
+    <string name="help">Help</string>
+    <string name="profile">Profile</string>
+    <string name="notifications">Notifications</string>
+    <string name="market_prices">Market Prices</string>
+    <string name="soil_analysis">Soil Analysis</string>
+    <string name="ai_chat">AI Assistant</string>
+    <string name="fertilizer_advisory">Fertilizer Advisory</string>
+    <string name="pest_control">Pest Control</string>
+    <string name="youtube_tutorials">Video Tutorials</string>
+    <string name="welcome_farmer">Good Morning, Farmer</string>
+    <string name="scan_crop">Scan Your Crop</string>
+    <string name="talk_to_ai">Talk to AI</string>
+    <string name="weather_alert">Weather Alert</string>
+    <string name="market_today">Today Market</string>
+    
+    <!-- New Features -->
+    <string name="drone_analysis">Drone Analysis</string>
+    <string name="community_forum">Community Forum</string>
+    <string name="gps_location">GPS Location</string>
+    <string name="gov_schemes">Govt Schemes</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="logout">Logout</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="dont_have_account">Don\'t have an account? Sign Up</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    
+    <!-- Wheat Specific -->
+    <string name="wheat_farming">Wheat Farming</string>
+    <string name="sowing_time">Sowing Time</string>
+    <string name="irrigation">Irrigation</string>
+</resources>

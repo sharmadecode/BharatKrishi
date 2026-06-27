@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Dashboard reads detections; writes require authenticated owner
+    match /detections/{doc} {
+      allow read: if isSignedIn() && request.auth.uid == resource.data.userId;
+      allow create: if isSignedIn()
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.keys().hasAll([
+                      'userId', 'diseaseName', 'confidence', 'timestamp'
+                    ])
+                    && request.resource.data.confidence is number
+                    && request.resource.data.confidence >= 0.0
+                    && request.resource.data.confidence <= 1.0
+                    && request.resource.data.diseaseName is string
+                    && request.resource.data.diseaseName.size() > 0
+                    && request.resource.data.diseaseName.size() < 200;
+      allow update, delete: if false;
+    }
+
+    match /crop_registrations/{doc} {
+      allow read: if isSignedIn() && request.auth.uid == resource.data.userId;
+      allow create: if isSignedIn()
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.cropName is string
+                    && request.resource.data.cropName.size() > 0;
+      allow update, delete: if false;
+    }
+
+    match /disaster_reports/{doc} {
+      allow read: if isSignedIn() && request.auth.uid == resource.data.userId;
+      allow create: if isSignedIn()
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.description is string
+                    && request.resource.data.description.size() > 0;
+      allow update, delete: if false;
+    }
+  }
+}

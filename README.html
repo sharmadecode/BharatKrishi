@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BharatKrishi - Project Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #ffffff;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        h1 {
+            font-size: 2em;
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.3em;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.3em;
+            margin-top: 1.5em;
+        }
+
+        h3 {
+            font-size: 1.25em;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        ul {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 0.25em;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        th,
+        td {
+            border: 1px solid #dfe2e5;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+
+        tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #dfe2e5;
+            border-radius: 6px;
+        }
+
+        .alert {
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 0.25em solid #8250df;
+            background-color: #f6f8fa;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            color: #8250df;
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .center-text {
+            text-align: center;
+        }
+
+        @media print {
+            body {
+                max-width: 100%;
+                padding: 0;
+            }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>BharatKrishi 🌾</h1>
+
+    <p><strong>Revolutionizing Agriculture with Offline-First AI</strong></p>
+
+    <p>BharatKrishi is a cutting-edge Android application designed to empower farmers with advanced technology,
+        operating completely offline. We have achieved a global first: a <strong>fully functional Wheat Disease
+            Detection model compressed to just 19MB</strong>, utilizing a state-of-the-art <strong>MobileViT +
+            Transformer</strong> architecture.</p>
+
+    <h2>🚀 World's First Innovations</h2>
+
+    <div class="alert">
+        <div class="alert-title">IMPORTANT: 19MB Disease Detection Model</div>
+        <p>We have successfully engineered a heavy-duty transformer model (MobileViT) to run on mobile devices with a
+            footprint of only <strong>19MB</strong>. This is an industry-first achievement, enabling advanced AI on
+            low-end devices without internet.</p>
+    </div>
+
+    <ul>
+        <li><strong>⚡ Blazing Fast Performance</strong>: Delivers disease diagnosis results in <strong>under 1
+                millisecond</strong>.</li>
+        <li><strong>🔌 100% Offline Capability</strong>: Detection works anywhere, anytime—no data connection required.
+        </li>
+        <li><strong>🧠 Hybrid Architecture</strong>: Combines the spatial precision of CNNs with the global context of
+            Transformers (MobileViT) for superior accuracy.</li>
+    </ul>
+
+    <h2>📱 Key Features</h2>
+
+    <h3>🔍 AI Wheat Disease Detection</h3>
+    <ul>
+        <li><strong>Instant Diagnosis</strong>: Detects 8+ classes of wheat diseases (Yellow Rust, Brown Rust, etc.)
+            instantly.</li>
+        <li><strong>Offline Inference</strong>: Powered by ONNX Runtime, ensuring privacy and speed.</li>
+        <li><strong>Smart Remediation</strong>: Provides immediate, actionable advisory for detected issues.</li>
+    </ul>
+
+    <h3>🤖 KrishiMitra AI Assistant</h3>
+    <ul>
+        <li><strong>Bilingual Support</strong>: Chat in Hindi or English.</li>
+        <li><strong>Context-Aware</strong>: Asks generalized questions about farming, weather, and government schemes.
+        </li>
+        <li><strong>Voice-Enabled</strong>: Speak to the AI for hands-free interaction.</li>
+    </ul>
+
+    <h3>🚁 Drone Field Analysis</h3>
+    <ul>
+        <li><strong>Full Field Mapping</strong>: Generates disease heatmaps and NDVI analysis for entire fields.</li>
+        <li><strong>Precision Agriculture</strong>: Identifies specific patches needing attention, reducing chemical
+            usage.</li>
+    </ul>
+
+    <h3>🛠️ Comprehensive Farmer Tools</h3>
+    <ul>
+        <li><strong>🌤️ Weather Forecasting</strong>: Real-time accurate weather updates and alerts.
+        <li><strong>💰 Market Prices (Mandi Bhav)</strong>: Live crop prices from nearby markets.
+        <li><strong>📜 Government Schemes</strong>: One-tap access to latest agricultural subsidies and beneficiary
+            schemes.
+        <li><strong>🚜 Soil Health</strong>: Logs and tracks soil parameters (N-P-K, pH) over time.
+    </ul>
+
+    <hr>
+
+    <h2>🏗️ Project Structure & Tech Stack</h2>
+
+    <p><strong>Frontend</strong>:</p>
+    <ul>
+        <li><strong>Kotlin & Jetpack Compose</strong>: Modern, reactive UI toolkit for building native Android UIs.</li>
+        <li><strong>Material 3 Design</strong>: Utilizing the latest Google design principles for a premium, accessible
+            aesthetic.</li>
+    </ul>
+
+    <p><strong>Machine Learning</strong>:</p>
+    <ul>
+        <li><strong>Framework</strong>: PyTorch trained, exported to <strong>ONNX</strong>.</li>
+        <li><strong>Architecture</strong>: MobileViT (Mobile Vision Transformer).</li>
+        <li><strong>Optimization</strong>: Quantized and optimized for mobile edge inference (19MB total).</li>
+    </ul>
+
+    <p><strong>Backend</strong>:</p>
+    <ul>
+        <li><strong>Firebase</strong>: User authentication and real-time database.</li>
+        <li><strong>Spring Boot (Microservices)</strong>: Scalable backend for diverse agricultural data services.</li>
+    </ul>
+
+    <p><strong>UI/UX Principles</strong>:</p>
+    <ul>
+        <li><strong>Accessibility First</strong>: High contrast, large touch targets, and voice support for rural
+            accessibility.</li>
+        <li><strong>Visual Feedback</strong>: Skeleton loaders, shimmer effects, and seamless transitions for a premium
+            feel.</li>
+        <li><strong>Localized</strong>: Full support for Hindi and English.</li>
+    </ul>
+
+    <hr>
+
+    <h2>👥 Team - Cartel Coders</h2>
+    <p><strong>Institute</strong>: Greater Noida Institute of Technology</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Focus Areas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Aditya Sharma</strong> (Team Lead)</td>
+                <td>Full Stack + AI/ML</td>
+                <td>Android, Web, AI Model Optimization</td>
+            </tr>
+            <tr>
+                <td><strong>Parmanshu Singh Patel</strong></td>
+                <td>Full Stack + ML</td>
+                <td>Full Stack Development, ML Training</td>
+            </tr>
+            <tr>
+                <td><strong>Adarsh Mishra</strong></td>
+                <td>Full Stack</td>
+                <td>Application Logic, Feature Implementation</td>
+            </tr>
+            <tr>
+                <td><strong>Piyush Tiwari</strong></td>
+                <td>Frontend + Backend</td>
+                <td>UI Development, Server-Side Logic</td>
+            </tr>
+            <tr>
+                <td><strong>Saksham Tyagi</strong></td>
+                <td>Database + Microservices</td>
+                <td>Schema Design, Service Orchestration</td>
+            </tr>
+            <tr>
+                <td><strong>Tanisha Malhotra</strong></td>
+                <td>System Design + UI/UX</td>
+                <td>Architecture, User Experience Design</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2>📸 Screenshots</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="center-text">Home Screen</th>
+                <th class="center-text">Wheat Detection</th>
+                <th class="center-text">AI Assistant</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="center-text"><img src="screenshots/HomeScreen.webp" width="250" alt="Home Screen"></td>
+                <td class="center-text"><img src="screenshots/Wheat_Analysis.webp" width="250" alt="Wheat Detection">
+                </td>
+                <td class="center-text"><img src="screenshots/Ai_assistence.webp" width="250" alt="AI Assistant"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>More Features</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="center-text">Drone Analysis</th>
+                <th class="center-text">Soil Health</th>
+                <th class="center-text">Market Prices</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="center-text"><img src="screenshots/Drone_Analysis.webp" width="250" alt="Drone Analysis">
+                </td>
+                <td class="center-text"><img src="screenshots/Soilhealth.webp" width="250" alt="Soil Health"></td>
+                <td class="center-text"><img src="screenshots/Market_Prices_for_crops.webp" width="250"
+                        alt="Market Prices"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="center-text">Weather Alerts</th>
+                <th class="center-text">Gov Schemes</th>
+                <th class="center-text">User Profile</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="center-text"><img src="screenshots/Weather_Forecast_Alerts.webp" width="250"
+                        alt="Weather Alerts"></td>
+                <td class="center-text"><img src="screenshots/Alerts.webp" width="250" alt="Government Schemes"></td>
+                <td class="center-text"><img src="screenshots/User_Profile_DashBoard.webp" width="250"
+                        alt="User Profile"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        window.onload = function () {
+            // Optional: Auto-trigger print dialog for convenience
+            window.print();
+        }
+    </script>
+</body>
+
+</html>
